@@ -2,281 +2,412 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>The Nostalgia | SASS Invitation</title>
+<title>The Nostalgia | Personalized Invitation</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
-    margin: 0;
-    background: #080606;
-    color: white;
-    font-family: "Times New Roman", serif;
+  margin: 0;
+  background: #100b0b;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+header {
+  text-align: center;
+  padding: 34px 18px 22px;
+}
+
+header .brand {
+  color: #c7a06a;
+  letter-spacing: 4px;
+  font-size: 12px;
+}
+
+header h1 {
+  font-size: 36px;
+  font-weight: normal;
+  font-style: italic;
+  margin: 12px 0 8px;
+}
+
+header p {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #d8c8b6;
+}
+
+.panel {
+  max-width: 520px;
+  margin: 0 auto 25px;
+  padding: 22px;
+  text-align: center;
+  background: #201615;
+  border: 1px solid #66503d;
+  border-radius: 14px;
+}
+
+.panel h2 {
+  font-size: 18px;
+  font-weight: normal;
+  letter-spacing: 2px;
+}
+
+input {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin: 18px 0 12px;
+  border: 1px solid #aa895e;
+  border-radius: 7px;
+  font-size: 17px;
+  text-align: center;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border: 0;
+  border-radius: 7px;
+  background: #c7a06a;
+  color: #1b110d;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: transparent;
+  border: 1px solid #c7a06a;
+  color: #f4d4a7;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: wait;
+}
+
+#status {
+  min-height: 20px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #e9d0ab;
 }
 
 .invitation {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .invitation img {
-    display: block;
-    width: 100%;
-    height: auto;
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-touch-callout: default;
 }
 
-/* GENERATOR */
-
-.generator {
-    max-width: 600px;
-    margin: 25px auto;
-    padding: 20px;
-    text-align: center;
+.actions {
+  max-width: 520px;
+  margin: 20px auto 35px;
+  padding: 0 20px;
 }
 
-.generator h2 {
-    font-size: 22px;
-    font-weight: normal;
-    letter-spacing: 2px;
-}
+#guestActions { display: none; }
 
-.generator input {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    margin-bottom: 12px;
-    border: 1px solid #b58b56;
-    border-radius: 6px;
-}
-
-.generator button {
-    padding: 14px 22px;
-    background: #b58b56;
-    color: black;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-#link {
-    margin-top: 20px;
-    word-break: break-all;
-    line-height: 1.7;
-}
-
-#link a {
-    color: white;
-}
-
-.copy-button {
-    display: block;
-    margin: 15px auto;
+@media (max-width: 560px) {
+  .panel {
+    margin: 0 15px 22px;
+  }
+  header h1 { font-size: 32px; }
 }
 
 @media print {
-    @page {
-        margin: 0;
-    }
-
-    body {
-        background: white;
-    }
-
-    .generator {
-        display: none !important;
-    }
-
-    .invitation {
-        max-width: none;
-    }
+  header, .panel, .actions { display: none !important; }
+  body { background: white; }
+  .invitation { max-width: none; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="invitation">
-    <img
-        id="invitationImage"
-        src="IMG_0638.jpeg"
-        alt="Personalized SASS Invitation"
-    >
+<header id="pageHeader">
+  <div class="brand">THE VINTAGE PULSE</div>
+  <h1>The Nostalgia</h1>
+  <p>PERSONALIZED INVITATION</p>
+</header>
+
+<div class="panel" id="generator">
+  <h2>CREATE YOUR INVITATION</h2>
+
+  <input
+    id="nameInput"
+    type="text"
+    placeholder="Guest Name"
+    autocomplete="off"
+  >
+
+  <button id="generateButton">
+    Generate Invitation
+  </button>
+
+  <div id="generatedActions" style="display:none">
+    <button class="secondary" id="copyLinkButton">
+      Copy Invitation Link
+    </button>
+    <button class="secondary" id="openLinkButton">
+      Open Invitation
+    </button>
+  </div>
+
+  <div id="status" role="status"></div>
 </div>
 
-<div class="generator" id="generator">
+<div class="invitation">
+  <img
+    id="invitationImage"
+    src="IMG_0638.jpeg"
+    alt="The Nostalgia Invitation"
+  >
+</div>
 
-    <h2>PERSONALIZED INVITATION</h2>
-
-    <input
-        type="text"
-        id="nameInput"
-        placeholder="Enter guest name"
-    >
-
-    <button onclick="generateLink()">
-        Generate Invitation
-    </button>
-
-    <div id="link"></div>
-
+<div class="actions" id="guestActions">
+  <button id="copyImageButton">Copy Image</button>
+  <button class="secondary" id="downloadButton">
+    Download Image
+  </button>
+  <div id="guestStatus" role="status"></div>
 </div>
 
 <script>
+const image = document.getElementById("invitationImage");
+const generator = document.getElementById("generator");
+const guestActions = document.getElementById("guestActions");
+const status = document.getElementById("status");
+const guestStatus = document.getElementById("guestStatus");
 
-const params = new URLSearchParams(window.location.search);
-const guest = params.get("name");
+const params = new URLSearchParams(location.search);
+const guest = (params.get("name") || "").trim();
 
-const invitationImage =
-    document.getElementById("invitationImage");
+let personalizedBlob = null;
+let generatedURL = "";
 
-if (guest && guest.trim()) {
-
-    document.getElementById("generator").style.display =
-        "none";
-
-    invitationImage.onload = function() {
-        createPersonalizedImage(guest);
-    };
-
-    if (invitationImage.complete &&
-        invitationImage.naturalWidth > 0) {
-
-        createPersonalizedImage(guest);
+function waitForImage(img) {
+  return new Promise((resolve, reject) => {
+    if (img.complete && img.naturalWidth > 0) {
+      resolve();
+      return;
     }
+    img.addEventListener("load", resolve, { once: true });
+    img.addEventListener("error", () => {
+      reject(new Error("Invitation image could not load."));
+    }, { once: true });
+  });
 }
 
-function createPersonalizedImage(name) {
+function drawGuestName(ctx, width, height, name) {
+  const text = name.toUpperCase().trim();
+  const x = width * 0.05;
+  const y = height * 0.14;
+  const maxWidth = width * 0.45;
 
-    // Prevent processing the generated image again
-    invitationImage.onload = null;
+  // Font size is relative to image width, not phone screen.
+  let fontSize = width * 0.047;
+  const minFontSize = width * 0.025;
 
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  ctx.fillStyle = "#ffffff";
 
-    const originalWidth = invitationImage.naturalWidth;
-    const originalHeight = invitationImage.naturalHeight;
+  ctx.shadowColor = "rgba(0,0,0,0.85)";
+  ctx.shadowBlur = width * 0.009;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = width * 0.003;
 
-    canvas.width = originalWidth;
-    canvas.height = originalHeight;
-
-    // Draw original invitation
-    ctx.drawImage(
-        invitationImage,
-        0,
-        0,
-        originalWidth,
-        originalHeight
-    );
-
-    // Guest name appearance
-    const fontSize = originalWidth * 0.052;
-
-    ctx.font = fontSize + 'px "Times New Roman", serif';
-    ctx.fillStyle = "#ffffff";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
-
-    ctx.shadowColor = "rgba(0,0,0,0.9)";
-    ctx.shadowBlur = originalWidth * 0.012;
-    ctx.shadowOffsetY = originalWidth * 0.003;
-
-    const x = originalWidth * 0.05;
-    const y = originalHeight * 0.14;
-    const maxWidth = originalWidth * 0.45;
-
-    // Wrap long names into multiple lines
-    const words = name.toUpperCase().trim().split(/\s+/);
+  function wrap(size) {
+    ctx.font = `${size}px "Times New Roman", Georgia, serif`;
+    const words = text.split(/\s+/);
     const lines = [];
-    let currentLine = "";
+    let line = "";
 
     for (const word of words) {
+      const candidate = line ? line + " " + word : word;
 
-        const testLine = currentLine
-            ? currentLine + " " + word
-            : word;
-
-        if (
-            ctx.measureText(testLine).width > maxWidth &&
-            currentLine
-        ) {
-            lines.push(currentLine);
-            currentLine = word;
-        } else {
-            currentLine = testLine;
-        }
+      if (line && ctx.measureText(candidate).width > maxWidth) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = candidate;
+      }
     }
 
-    if (currentLine) {
-        lines.push(currentLine);
-    }
+    if (line) lines.push(line);
+    return lines;
+  }
 
-    const lineHeight = fontSize * 1.15;
+  let lines = wrap(fontSize);
 
-    lines.forEach((line, index) => {
+  // Fit the name into a maximum of two lines where possible.
+  while (lines.length > 2 && fontSize > minFontSize) {
+    fontSize *= 0.95;
+    lines = wrap(fontSize);
+  }
 
-        ctx.fillText(
-            line,
-            x,
-            y + index * lineHeight,
-            maxWidth
-        );
+  ctx.font = `${fontSize}px "Times New Roman", Georgia, serif`;
 
-    });
+  const lineHeight = fontSize * 1.18;
 
-    // Replace the actual image with the personalized image
-    invitationImage.src = canvas.toDataURL("image/png");
-
+  lines.forEach((line, index) => {
+    ctx.fillText(
+      line,
+      x,
+      y + index * lineHeight,
+      maxWidth
+    );
+  });
 }
 
-function generateLink() {
+async function makePersonalizedImage(name) {
+  await waitForImage(image);
 
-    const name = document
-        .getElementById("nameInput")
-        .value
-        .trim();
+  // Keep a reference to the original image before replacing it.
+  const canvas = document.createElement("canvas");
+  canvas.width = image.naturalWidth;
+  canvas.height = image.naturalHeight;
 
-    if (!name) {
-        alert("Please enter guest name");
-        return;
-    }
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(image, 0, 0);
 
-    const url = new URL(window.location.href);
-    url.searchParams.set("name", name);
+  drawGuestName(
+    ctx,
+    canvas.width,
+    canvas.height,
+    name
+  );
 
-    const linkDiv = document.getElementById("link");
-    linkDiv.innerHTML = "";
-
-    const anchor = document.createElement("a");
-    anchor.href = url.href;
-    anchor.textContent = url.href;
-    anchor.target = "_blank";
-
-    linkDiv.appendChild(anchor);
-
-    const copyButton = document.createElement("button");
-    copyButton.textContent = "Copy Invitation Link";
-    copyButton.className = "copy-button";
-
-    copyButton.onclick = async function() {
-
-        try {
-            await navigator.clipboard.writeText(url.href);
-            copyButton.textContent = "Link Copied!";
-        } catch (error) {
-            alert("Please copy the link manually.");
-        }
-
-    };
-
-    linkDiv.appendChild(copyButton);
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(blob => {
+      if (blob) resolve(blob);
+      else reject(new Error("Could not create image."));
+    }, "image/png");
+  });
 }
 
+async function copyText(value) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    await navigator.clipboard.writeText(value);
+  } else {
+    const field = document.createElement("textarea");
+    field.value = value;
+    document.body.appendChild(field);
+    field.select();
+    document.execCommand("copy");
+    field.remove();
+  }
+}
+
+document.getElementById("generateButton").onclick = () => {
+  const name = document.getElementById("nameInput").value.trim();
+
+  if (!name) {
+    status.textContent = "Please enter a guest name.";
+    return;
+  }
+
+  const url = new URL(location.href);
+  url.searchParams.set("name", name);
+  generatedURL = url.href;
+
+  document.getElementById("generatedActions").style.display = "block";
+  status.textContent = "Invitation link is ready.";
+};
+
+document.getElementById("copyLinkButton").onclick = async () => {
+  try {
+    await copyText(generatedURL);
+    status.textContent = "Invitation link copied!";
+  } catch {
+    status.textContent = "Please copy the link manually.";
+    window.prompt("Copy invitation link:", generatedURL);
+  }
+};
+
+document.getElementById("openLinkButton").onclick = () => {
+  if (generatedURL) location.href = generatedURL;
+};
+
+document.getElementById("copyImageButton").onclick = async () => {
+  if (!personalizedBlob) return;
+
+  try {
+    if (!navigator.clipboard || !window.ClipboardItem) {
+      throw new Error("Clipboard image not supported.");
+    }
+
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        "image/png": personalizedBlob
+      })
+    ]);
+
+    guestStatus.textContent = "Image copied with guest name!";
+  } catch {
+    guestStatus.textContent =
+      "Copy Image isn't supported here. Use Download Image instead.";
+  }
+};
+
+document.getElementById("downloadButton").onclick = () => {
+  if (!personalizedBlob) return;
+
+  const url = URL.createObjectURL(personalizedBlob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "The-Nostalgia-Invitation.png";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+};
+
+async function initializeGuest() {
+  if (!guest) return;
+
+  generator.style.display = "none";
+  guestActions.style.display = "block";
+
+  const copyButton = document.getElementById("copyImageButton");
+  const downloadButton = document.getElementById("downloadButton");
+
+  copyButton.disabled = true;
+  downloadButton.disabled = true;
+  guestStatus.textContent = "Preparing your invitation...";
+
+  try {
+    personalizedBlob = await makePersonalizedImage(guest);
+
+    const personalizedURL = URL.createObjectURL(personalizedBlob);
+
+    image.src = personalizedURL;
+
+    copyButton.disabled = false;
+    downloadButton.disabled = false;
+
+    guestStatus.textContent = "";
+  } catch (error) {
+    guestStatus.textContent =
+      "Could not prepare the image. Please refresh.";
+  }
+}
+
+initializeGuest();
 </script>
 
 </body>
