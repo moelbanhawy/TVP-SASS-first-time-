@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The Nostalgia | SASS Bar Invitation</title>
+<title>The Nostalgia | SASS Invitation</title>
 
 <style>
 * {
@@ -18,10 +18,7 @@ body {
     font-family: "Times New Roman", serif;
 }
 
-/* INVITATION */
-
 .invitation {
-    position: relative;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
@@ -31,32 +28,6 @@ body {
     display: block;
     width: 100%;
     height: auto;
-}
-
-/* GUEST NAME */
-
-.guest-name {
-    position: absolute;
-
-    top: 14%;
-    left: 5%;
-
-    width: 45%;
-
-    text-align: left;
-
-    font-family: "Times New Roman", serif;
-    font-size: clamp(18px, 5vw, 32px);
-    font-weight: normal;
-
-    text-transform: uppercase;
-    letter-spacing: 2px;
-
-    color: #ffffff;
-
-    overflow-wrap: break-word;
-
-    text-shadow: 0 2px 8px rgba(0,0,0,0.9);
 }
 
 /* GENERATOR */
@@ -72,7 +43,6 @@ body {
     font-size: 22px;
     font-weight: normal;
     letter-spacing: 2px;
-    color: #ffffff;
 }
 
 .generator input {
@@ -80,23 +50,16 @@ body {
     padding: 14px;
     font-size: 16px;
     margin-bottom: 12px;
-
     border: 1px solid #b58b56;
     border-radius: 6px;
-
-    background: #ffffff;
-    color: #000000;
 }
 
 .generator button {
     padding: 14px 22px;
-
     background: #b58b56;
     color: black;
-
     border: none;
     border-radius: 6px;
-
     font-size: 16px;
     cursor: pointer;
 }
@@ -104,12 +67,11 @@ body {
 #link {
     margin-top: 20px;
     word-break: break-all;
-    font-size: 14px;
     line-height: 1.7;
 }
 
 #link a {
-    color: #ffffff;
+    color: white;
 }
 
 .copy-button {
@@ -117,17 +79,12 @@ body {
     margin: 15px auto;
 }
 
-/* PRINT LAYOUT */
-
 @media print {
-
     @page {
         margin: 0;
     }
 
-    html, body {
-        margin: 0;
-        padding: 0;
+    body {
         background: white;
     }
 
@@ -136,48 +93,21 @@ body {
     }
 
     .invitation {
-        width: 100%;
         max-width: none;
-        margin: 0;
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-
-    .invitation img {
-        width: 100%;
-        height: auto;
-    }
-
-    .guest-name {
-        color: #ffffff;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
     }
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- INVITATION IMAGE -->
-
 <div class="invitation">
-
     <img
+        id="invitationImage"
         src="IMG_0638.jpeg"
-        alt="SASS Bar Invitation"
+        alt="Personalized SASS Invitation"
     >
-
-    <div
-        class="guest-name"
-        id="guestName">
-    </div>
-
 </div>
-
-
-<!-- PERSONALIZED INVITATION GENERATOR -->
 
 <div class="generator" id="generator">
 
@@ -197,27 +127,112 @@ body {
 
 </div>
 
-
 <script>
 
-/* READ GUEST NAME FROM URL */
-
 const params = new URLSearchParams(window.location.search);
-
 const guest = params.get("name");
 
-if (guest) {
+const invitationImage =
+    document.getElementById("invitationImage");
 
-    document.getElementById("guestName").textContent =
-        guest.toUpperCase();
+if (guest && guest.trim()) {
 
     document.getElementById("generator").style.display =
         "none";
 
+    invitationImage.onload = function() {
+        createPersonalizedImage(guest);
+    };
+
+    if (invitationImage.complete &&
+        invitationImage.naturalWidth > 0) {
+
+        createPersonalizedImage(guest);
+    }
 }
 
+function createPersonalizedImage(name) {
 
-/* GENERATE PERSONALIZED LINK */
+    // Prevent processing the generated image again
+    invitationImage.onload = null;
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const originalWidth = invitationImage.naturalWidth;
+    const originalHeight = invitationImage.naturalHeight;
+
+    canvas.width = originalWidth;
+    canvas.height = originalHeight;
+
+    // Draw original invitation
+    ctx.drawImage(
+        invitationImage,
+        0,
+        0,
+        originalWidth,
+        originalHeight
+    );
+
+    // Guest name appearance
+    const fontSize = originalWidth * 0.052;
+
+    ctx.font = fontSize + 'px "Times New Roman", serif';
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+
+    ctx.shadowColor = "rgba(0,0,0,0.9)";
+    ctx.shadowBlur = originalWidth * 0.012;
+    ctx.shadowOffsetY = originalWidth * 0.003;
+
+    const x = originalWidth * 0.05;
+    const y = originalHeight * 0.14;
+    const maxWidth = originalWidth * 0.45;
+
+    // Wrap long names into multiple lines
+    const words = name.toUpperCase().trim().split(/\s+/);
+    const lines = [];
+    let currentLine = "";
+
+    for (const word of words) {
+
+        const testLine = currentLine
+            ? currentLine + " " + word
+            : word;
+
+        if (
+            ctx.measureText(testLine).width > maxWidth &&
+            currentLine
+        ) {
+            lines.push(currentLine);
+            currentLine = word;
+        } else {
+            currentLine = testLine;
+        }
+    }
+
+    if (currentLine) {
+        lines.push(currentLine);
+    }
+
+    const lineHeight = fontSize * 1.15;
+
+    lines.forEach((line, index) => {
+
+        ctx.fillText(
+            line,
+            x,
+            y + index * lineHeight,
+            maxWidth
+        );
+
+    });
+
+    // Replace the actual image with the personalized image
+    invitationImage.src = canvas.toDataURL("image/png");
+
+}
 
 function generateLink() {
 
@@ -227,55 +242,39 @@ function generateLink() {
         .trim();
 
     if (!name) {
-
         alert("Please enter guest name");
-
         return;
     }
 
     const url = new URL(window.location.href);
-
     url.searchParams.set("name", name);
 
     const linkDiv = document.getElementById("link");
-
     linkDiv.innerHTML = "";
 
     const anchor = document.createElement("a");
-
     anchor.href = url.href;
     anchor.textContent = url.href;
     anchor.target = "_blank";
 
     linkDiv.appendChild(anchor);
 
-
-    /* COPY LINK BUTTON */
-
     const copyButton = document.createElement("button");
-
     copyButton.textContent = "Copy Invitation Link";
-
     copyButton.className = "copy-button";
 
     copyButton.onclick = async function() {
 
         try {
-
             await navigator.clipboard.writeText(url.href);
-
             copyButton.textContent = "Link Copied!";
-
         } catch (error) {
-
             alert("Please copy the link manually.");
-
         }
 
     };
 
     linkDiv.appendChild(copyButton);
-
 }
 
 </script>
