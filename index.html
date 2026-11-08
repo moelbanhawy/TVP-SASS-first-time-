@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>The Nostalgia | SASS Bar Invitation</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #080606;
+  color: white;
+  font-family: "Times New Roman", serif;
+}
+
+.invitation {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+}
+
+.invitation img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.guest-name {
+  position: absolute;
+  top: 83%;
+  left: 5%;
+  width: 90%;
+  text-align: center;
+
+  font-family: "Times New Roman", serif;
+  font-size: clamp(18px, 5vw, 32px);
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #d5ad72;
+
+  overflow-wrap: break-word;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+.generator {
+  max-width: 600px;
+  margin: 25px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.generator input {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #b58b56;
+  border-radius: 6px;
+}
+
+.generator button {
+  padding: 14px 22px;
+  background: #b58b56;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#link {
+  margin-top: 15px;
+  word-break: break-all;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="invitation">
+  <img src="IMG_0638.jpeg" alt="SASS Bar Invitation">
+  <div class="guest-name" id="guestName"></div>
+</div>
+
+<div class="generator" id="generator">
+  <h2>PERSONALIZED INVITATION</h2>
+  <input
+    type="text"
+    id="nameInput"
+    placeholder="Enter guest name"
+  >
+  <button onclick="generateLink()">Generate Invitation Link</button>
+  <div id="link"></div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const guest = params.get("name");
+
+if (guest) {
+  document.getElementById("guestName").textContent =
+    guest.toUpperCase();
+
+  document.getElementById("generator").style.display = "none";
+}
+
+function generateLink() {
+  const name = document.getElementById("nameInput").value.trim();
+
+  if (!name) {
+    alert("Please enter guest name");
+    return;
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.set("name", name);
+
+  const linkDiv = document.getElementById("link");
+  linkDiv.innerHTML = "";
+
+  const anchor = document.createElement("a");
+  anchor.href = url.href;
+  anchor.textContent = url.href;
+  anchor.style.color = "#d5ad72";
+
+  linkDiv.appendChild(anchor);
+}
+</script>
+
+</body>
+</html>
